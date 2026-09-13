@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def per_residue_ramachandra(
+def per_residue_ramachandran(
     angles: np.ndarray,
     *,
     residue_names=None,
@@ -86,9 +86,3 @@ def per_residue_ramachandra(
         fig.colorbar(image, ax=list(flat_axes[:n_residues]), label="ΔF [kcal/mol]")
     fig.subplots_adjust(wspace=0.25, hspace=0.35)
     return fig, axes
-
-
-def per_residue_ramachandran(*args, **kwargs):
-    """Correctly spelled alias for :func:`per_residue_ramachandra`."""
-    return per_residue_ramachandra(*args, **kwargs)
-
