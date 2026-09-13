@@ -146,7 +146,7 @@ import numpy as np
 from framebfn import (
     extract_backbone_angles,
     load_dyndb_trajectory,
-    per_residue_ramachandra,
+    per_residue_ramachandran,
 )
 
 PEPTIDE = "1L2Y"  # PDB ID or exact amino-acid sequence
@@ -167,14 +167,14 @@ print("Angle tensor:", angles.shape, "(frames, residues, phi/psi/omega)")
 residue_names = [
     f"{res.index + 1}: {res.name}" for res in trajectory.topology.residues
 ]
-fig, axes = per_residue_ramachandra(
+fig, axes = per_residue_ramachandran(
     angles,
     residue_names=residue_names,
     free_energy=False,
 )
 '''),
         code(r'''
-fig, axes = per_residue_ramachandra(
+fig, axes = per_residue_ramachandran(
     angles,
     residue_names=residue_names,
     free_energy=True,
@@ -223,7 +223,7 @@ sys.path.insert(0, str(repo_dir / "src"))
         code(r'''
 import torch
 from bioemu.sample import main as sample
-from framebfn import extract_backbone_angles, per_residue_ramachandra
+from framebfn import extract_backbone_angles, per_residue_ramachandran
 
 SEQUENCE = "INWKGIAAMAKKLL"
 NUM_SAMPLES = 1_000
@@ -249,7 +249,7 @@ print("Saved", angles.shape, "to", np_path)
 '''),
         code(r'''
 residue_names = [f"{i + 1}: {aa}" for i, aa in enumerate(SEQUENCE)]
-fig, axes = per_residue_ramachandra(
+fig, axes = per_residue_ramachandran(
     angles,
     residue_names=residue_names,
     free_energy=True,
