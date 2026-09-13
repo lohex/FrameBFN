@@ -21,21 +21,18 @@ is later made public.
 from framebfn import (
     extract_backbone_angles,
     load_dyndb_trajectory,
-    per_residue_ramachandra,
+    per_residue_ramachandran,
 )
 
 trajectory = load_dyndb_trajectory("1L2Y")
 angles = extract_backbone_angles(trajectory)
-fig, axes = per_residue_ramachandra(angles, free_energy=True)
+fig, axes = per_residue_ramachandran(angles, free_energy=True)
 ```
 
 `extract_backbone_angles` accepts an `mdtraj.Trajectory`, a trajectory path with an
 optional topology path, or a BioEmu output directory. Its output is shaped as
 `(frames, residues, 3)` with phi, psi and omega in degrees. Undefined terminal angles
 are `NaN`.
-
-The requested API name `per_residue_ramachandra` is provided, together with the
-correctly spelled alias `per_residue_ramachandran`.
 
 ## Local installation
 
@@ -46,4 +43,3 @@ pytest
 
 The notebooks are generated from `tools/build_notebooks.py`; rerun that script after
 changing their shared setup or structure.
-
