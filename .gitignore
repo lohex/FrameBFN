@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.venv/
+
+# Generated datasets and molecular trajectories
+data/*.csv
+data/dyndb/
+*.xtc
+*.dcd
+
