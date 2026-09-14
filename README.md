@@ -7,7 +7,7 @@ FrameBFN.
 
 | Workflow | Colab |
 | --- | --- |
-| Extract a length-filtered DynoDB peptide catalogue to `data/dyndb_peptides.csv` | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lohex/FrameBFN/blob/main/notebooks/01_extract_dyndb_peptides.ipynb) |
+| Save a length-filtered DynoDB catalogue to Google Drive and retrieve a trajectory by PDB ID or sequence | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lohex/FrameBFN/blob/main/notebooks/01_extract_dyndb_peptides.ipynb) |
 | Download one DynoDB trajectory and extract backbone angles | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lohex/FrameBFN/blob/main/notebooks/02_dyndb_trajectory_angles.ipynb) |
 | Generate a peptide ensemble with BioEmu | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lohex/FrameBFN/blob/main/notebooks/03_bioemu_peptide_sampling.ipynb) |
 
