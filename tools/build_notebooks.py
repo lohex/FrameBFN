@@ -87,17 +87,26 @@ write(
     [
         markdown(
             "Stream DynoDB metadata, select a configurable peptide length range, "
-            "and save the resulting catalogue as `data/dyndb_peptides.csv`. No "
-            "trajectory files are downloaded in this notebook."
+            "save the resulting catalogue to Google Drive, and optionally retrieve "
+            "one trajectory by PDB ID or exact peptide sequence."
         ),
         code(SETUP),
         code(r'''
+from google.colab import drive
+drive.mount("/content/drive")
+
 from datasets import load_dataset
 import pandas as pd
+from framebfn import load_dyndb_trajectory
 
 MIN_LENGTH = 7
 MAX_LENGTH = 15
-OUTPUT = repo_dir / "data" / "dyndb_peptides.csv"
+
+# Change this path if the project lives elsewhere in My Drive.
+DRIVE_PROJECT_DIR = Path("/content/drive/MyDrive/FrameBFN")
+DATA_DIR = DRIVE_PROJECT_DIR / "data"
+CATALOG_PATH = DATA_DIR / "dyndb_peptides.csv"
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 '''),
         code(r'''
 dataset = load_dataset("renzilin/DynoDB", split="train", streaming=True)
@@ -117,17 +126,37 @@ peptides = (
     .sort_values(["seq_length", "sequence", "pdb_id"])
     .reset_index(drop=True)
 )
-OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-peptides.to_csv(OUTPUT, index=False)
-print(f"Saved {len(peptides):,} DynoDB entries to {OUTPUT}")
+peptides.to_csv(CATALOG_PATH, index=False)
+print(f"Saved {len(peptides):,} DynoDB entries to {CATALOG_PATH}")
 peptides.head()
 '''),
         code(r'''
 peptides.groupby("seq_length").size().rename("systems").to_frame()
 '''),
+        markdown(
+            "## Retrieve one trajectory\n\nSet `PEPTIDE_QUERY` to either a PDB ID "
+            "or an exact amino acid sequence. If a sequence occurs in multiple "
+            "DynoDB rows, the first matching entry is selected."
+        ),
         code(r'''
-from google.colab import files
-files.download(str(OUTPUT))
+PEPTIDE_QUERY = "1L2Y"  # PDB ID or exact peptide sequence
+
+trajectory, metadata = load_dyndb_trajectory(
+    PEPTIDE_QUERY,
+    return_metadata=True,
+)
+
+pdb_id = str(metadata["PDB_ID"]).strip()
+trajectory_dir = DATA_DIR / "dyndb" / pdb_id
+trajectory_dir.mkdir(parents=True, exist_ok=True)
+trajectory_path = trajectory_dir / f"{pdb_id}_trajectory.pdb"
+trajectory.save_pdb(trajectory_path)
+
+print("PDB ID:", pdb_id)
+print("Sequence:", metadata["Sequence_y(fixed)"])
+print("Frames:", trajectory.n_frames)
+print("Residues:", trajectory.n_residues)
+print("Saved trajectory to:", trajectory_path)
 '''),
     ],
 )
